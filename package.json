@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/leaflet": "^1.9.21",
     "i18next": "^24.2.2",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.511.0",
     "pocketbase": "^0.25.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.5.1",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.6.2"
   },
   "devDependencies": {

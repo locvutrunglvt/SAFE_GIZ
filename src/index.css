@@ -1382,6 +1382,14 @@ input, select, textarea {
   animation: slideUp 0.8s ease;
 }
 
+/* PC — Larger province cards */
+@media (min-width: 1024px) {
+  .province-cards-large {
+    max-width: 1200px;
+    gap: 36px;
+  }
+}
+
 .province-card {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
@@ -1413,6 +1421,35 @@ input, select, textarea {
   height: 200px;
   overflow: hidden;
   position: relative;
+}
+@media (min-width: 1024px) {
+  .province-image-large {
+    height: 280px;
+  }
+}
+
+/* Leaflet map tooltip */
+.province-tooltip {
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  background: rgba(62,39,35,0.9) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+}
+.province-tooltip::before {
+  border-top-color: rgba(62,39,35,0.9) !important;
+}
+
+/* Leaflet overrides */
+.leaflet-control-zoom a {
+  background: white !important;
+  color: #3E2723 !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
 }
 .province-image {
   width: 100%;
