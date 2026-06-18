@@ -1578,6 +1578,22 @@ input, select, textarea {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
   }
+  .dashboard-middle-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .dashboard-header-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 16px 18px !important;
+  }
+  .dashboard-header-stats {
+    width: 100%;
+    justify-content: flex-start !important;
+  }
+  .dashboard-quick-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
 }
 
 /* ══════════════════════════════════════════════════

@@ -88,7 +88,7 @@ export default function Dashboard() {
     <div className="animate-in" style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 80px)' }}>
 
       {/* ═══ HEADER BAR ═══ */}
-      <div style={{
+      <div className="dashboard-header-bar" style={{
         background: 'linear-gradient(135deg, #3E2723 0%, #4E342E 50%, #5D4037 100%)',
         borderRadius: 14, padding: '20px 28px', marginBottom: 18,
         color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -101,7 +101,7 @@ export default function Dashboard() {
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>{t('dashboard.title')}</h1>
           <p style={{ fontSize: 13, opacity: 0.6, margin: '4px 0 0' }}>📍 {provinceName}</p>
         </div>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+        <div className="dashboard-header-stats" style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: 22, fontWeight: 800 }}>{loading ? '—' : stats.farmers.toLocaleString()}</div>
             <div style={{ fontSize: 10, opacity: 0.5 }}>{lang === 'vi' ? 'Nông dân' : 'Farmers'}</div>
@@ -152,7 +152,7 @@ export default function Dashboard() {
       </div>
 
       {/* ═══ MIDDLE: Quick Actions + Partners (side by side) ═══ */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, flex: 1, minHeight: 0 }}>
+      <div className="dashboard-middle-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, flex: 1, minHeight: 0 }}>
 
         {/* LEFT — Quick Actions */}
         <div style={{
@@ -163,7 +163,7 @@ export default function Dashboard() {
           <h3 style={{ fontSize: 14, fontWeight: 700, color: '#3E2723', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
             ⚡ {lang === 'vi' ? 'Thao tác nhanh' : 'Quick Actions'}
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+          <div className="dashboard-quick-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
             {actions.map((a, i) => (
               <div key={i} onClick={() => navigate(a.link)} style={{
                 background: '#FAFAF8', borderRadius: 10, padding: '14px 10px',
