@@ -61,33 +61,19 @@ export default function Dashboard() {
 
       {/* ══════════ PC LAYOUT ══════════ */}
       <div className="dashboard-pc" style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 80px)' }}>
-
-        {/* HEADER */}
-        <div className="dashboard-header-bar" style={{
-          background: 'linear-gradient(135deg, #3E2723 0%, #4E342E 50%, #5D4037 100%)',
-          borderRadius: 14, padding: '20px 28px', marginBottom: 18,
-          color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          boxShadow: '0 4px 16px rgba(62,39,35,0.25)',
-        }}>
+        <div className="dashboard-header-bar" style={{ background: 'linear-gradient(135deg, #3E2723 0%, #4E342E 50%, #5D4037 100%)', borderRadius: 14, padding: '20px 28px', marginBottom: 18, color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 16px rgba(62,39,35,0.25)' }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', opacity: 0.5, marginBottom: 4 }}>SAFE — GIZ VIETNAM</div>
             <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>{t('dashboard.title')}</h1>
             <p style={{ fontSize: 13, opacity: 0.6, margin: '4px 0 0' }}>📍 {provinceName}</p>
           </div>
           <div className="dashboard-header-stats" style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 22, fontWeight: 800 }}>{fmt(stats.farmers)}</div>
-              <div style={{ fontSize: 10, opacity: 0.5 }}>{lang === 'vi' ? 'Nông dân' : 'Farmers'}</div>
-            </div>
+            <div style={{ textAlign: 'center' }}><div style={{ fontSize: 22, fontWeight: 800 }}>{fmt(stats.farmers)}</div><div style={{ fontSize: 10, opacity: 0.5 }}>{lang === 'vi' ? 'Nông dân' : 'Farmers'}</div></div>
             <div style={{ width: 1, height: 30, background: 'rgba(255,255,255,0.15)' }} />
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 22, fontWeight: 800 }}>{fmt(stats.farms)}</div>
-              <div style={{ fontSize: 10, opacity: 0.5 }}>{lang === 'vi' ? 'Nông trại' : 'Farms'}</div>
-            </div>
+            <div style={{ textAlign: 'center' }}><div style={{ fontSize: 22, fontWeight: 800 }}>{fmt(stats.farms)}</div><div style={{ fontSize: 10, opacity: 0.5 }}>{lang === 'vi' ? 'Nông trại' : 'Farms'}</div></div>
           </div>
         </div>
 
-        {/* KPI GRID */}
         <div className="dashboard-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 14, marginBottom: 18 }}>
           {[
             { icon: <Users size={20} />, label: lang === 'vi' ? 'Nông dân' : 'Farmers', value: stats.farmers, link: '/farmers' },
@@ -98,10 +84,8 @@ export default function Dashboard() {
             { icon: <GraduationCap size={20} />, label: lang === 'vi' ? 'Đào tạo' : 'Training', value: stats.trainings, link: '/training' },
           ].map((k, i) => (
             <div key={i} onClick={() => navigate(k.link)} style={{
-              background: 'linear-gradient(145deg, #FFF 0%, #F8F5F2 100%)',
-              borderRadius: 14, padding: '18px 20px', cursor: 'pointer', position: 'relative', overflow: 'hidden',
-              boxShadow: '0 6px 0 #D7CCC8, 0 8px 16px rgba(62,39,35,0.12), inset 0 1px 0 rgba(255,255,255,0.9)',
-              border: '1px solid #E8E0DB', transition: 'all 0.2s',
+              background: 'linear-gradient(145deg, #FFF 0%, #F8F5F2 100%)', borderRadius: 14, padding: '18px 20px', cursor: 'pointer', position: 'relative', overflow: 'hidden',
+              boxShadow: '0 6px 0 #D7CCC8, 0 8px 16px rgba(62,39,35,0.12), inset 0 1px 0 rgba(255,255,255,0.9)', border: '1px solid #E8E0DB', transition: 'all 0.2s',
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 10px 0 #BCAAA4, 0 14px 28px rgba(62,39,35,0.18), inset 0 1px 0 rgba(255,255,255,0.9)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 0 #D7CCC8, 0 8px 16px rgba(62,39,35,0.12), inset 0 1px 0 rgba(255,255,255,0.9)'; }}
@@ -114,9 +98,7 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* MIDDLE */}
         <div className="dashboard-middle-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, flex: 1 }}>
-          {/* Quick Actions */}
           <div style={{ background: 'white', borderRadius: 14, padding: '18px 20px', border: '1px solid #E8E0DB', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#3E2723', marginBottom: 14 }}>⚡ {lang === 'vi' ? 'Thao tác nhanh' : 'Quick Actions'}</h3>
             <div className="dashboard-quick-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
@@ -128,9 +110,7 @@ export default function Dashboard() {
                 { icon: <GraduationCap size={15} />, label: lang === 'vi' ? 'Đào tạo' : 'Training', link: '/training' },
                 { icon: <BarChart3 size={15} />, label: lang === 'vi' ? 'Báo cáo' : 'Reports', link: '/budget' },
               ].map((a, i) => (
-                <div key={i} onClick={() => navigate(a.link)} style={{
-                  background: '#FAFAF8', borderRadius: 10, padding: '14px 10px', textAlign: 'center', cursor: 'pointer', border: '1px solid #EFEBE9', transition: 'all 0.15s',
-                }}
+                <div key={i} onClick={() => navigate(a.link)} style={{ background: '#FAFAF8', borderRadius: 10, padding: '14px 10px', textAlign: 'center', cursor: 'pointer', border: '1px solid #EFEBE9', transition: 'all 0.15s' }}
                   onMouseEnter={e => { e.currentTarget.style.background = '#F5F0EB'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = '#FAFAF8'; e.currentTarget.style.transform = 'none'; }}
                 >
@@ -141,13 +121,10 @@ export default function Dashboard() {
             </div>
             <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #EFEBE9' }}>
               <div onClick={() => navigate('/eudr')} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '8px 0' }}>
-                <BarChart3 size={16} color="#5D4037" />
-                <span style={{ fontSize: 13, color: '#5D4037', fontWeight: 600 }}>EUDR Compliance</span>
-                <ArrowRight size={14} color="#A1887F" style={{ marginLeft: 'auto' }} />
+                <BarChart3 size={16} color="#5D4037" /><span style={{ fontSize: 13, color: '#5D4037', fontWeight: 600 }}>EUDR Compliance</span><ArrowRight size={14} color="#A1887F" style={{ marginLeft: 'auto' }} />
               </div>
             </div>
           </div>
-          {/* Partners */}
           <div style={{ background: 'white', borderRadius: 14, padding: '18px 20px', border: '1px solid #E8E0DB', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#3E2723', marginBottom: 14 }}><ShoppingCart size={15} color="#5D4037" style={{ marginRight: 6 }} />{lang === 'vi' ? 'Đối tác thu mua' : 'Partners'}</h3>
             {province === 'SL' && [
@@ -156,25 +133,13 @@ export default function Dashboard() {
             ].map(p => (
               <div key={p.code} onClick={() => navigate(p.link)} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0', borderBottom: '1px solid #EFEBE9', cursor: 'pointer' }}>
                 <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg, #5D4037, #8D6E63)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 14, fontWeight: 800, flexShrink: 0 }}>{p.code}</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 15, color: '#2C2C2C' }}>{p.name}</div>
-                  <div style={{ fontSize: 12, color: '#8D6E63' }}>{p.desc}</div>
-                </div>
-                <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <div style={{ fontSize: 22, fontWeight: 800, color: '#3E2723' }}>{fmt(p.count)}</div>
-                  <div style={{ fontSize: 11, color: '#A1887F' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</div>
-                </div>
+                <div style={{ flex: 1, minWidth: 0 }}><div style={{ fontWeight: 700, fontSize: 15, color: '#2C2C2C' }}>{p.name}</div><div style={{ fontSize: 12, color: '#8D6E63' }}>{p.desc}</div></div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}><div style={{ fontSize: 22, fontWeight: 800, color: '#3E2723' }}>{fmt(p.count)}</div><div style={{ fontSize: 11, color: '#A1887F' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</div></div>
               </div>
             ))}
             <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #EFEBE9', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              <div style={{ background: '#FAFAF8', borderRadius: 10, padding: '12px 14px', textAlign: 'center' }}>
-                <div style={{ fontSize: 20, fontWeight: 800, color: '#3E2723' }}>{provinceName}</div>
-                <div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'Tỉnh' : 'Province'}</div>
-              </div>
-              <div style={{ background: '#FAFAF8', borderRadius: 10, padding: '12px 14px', textAlign: 'center' }}>
-                <div style={{ fontSize: 20, fontWeight: 800, color: '#3E2723' }}>{fmt(stats.detechFarmers + stats.phucsinhFarmers)}</div>
-                <div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'Tổng' : 'Total'}</div>
-              </div>
+              <div style={{ background: '#FAFAF8', borderRadius: 10, padding: '12px 14px', textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 800, color: '#3E2723' }}>{provinceName}</div><div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'Tỉnh' : 'Province'}</div></div>
+              <div style={{ background: '#FAFAF8', borderRadius: 10, padding: '12px 14px', textAlign: 'center' }}><div style={{ fontSize: 20, fontWeight: 800, color: '#3E2723' }}>{fmt(stats.detechFarmers + stats.phucsinhFarmers)}</div><div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'Tổng' : 'Total'}</div></div>
             </div>
           </div>
         </div>
@@ -183,100 +148,63 @@ export default function Dashboard() {
 
       {/* ══════════ MOBILE LAYOUT ══════════ */}
       <div className="dashboard-mobile">
-        {/* Hero */}
-        <div style={{ background: 'linear-gradient(135deg, #3E2723, #5D4037)', borderRadius: 16, padding: '20px', marginBottom: 12, color: 'white' }}>
-          <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase' }}>SAFE — GIZ</div>
-          <div style={{ fontSize: 20, fontWeight: 800, margin: '4px 0' }}>{provinceName}</div>
-          <div style={{ display: 'flex', gap: 20, marginTop: 12 }}>
-            <div><div style={{ fontSize: 24, fontWeight: 800 }}>{fmt(stats.farmers)}</div><div style={{ fontSize: 11, opacity: 0.5 }}>{lang === 'vi' ? 'Nông dân' : 'Farmers'}</div></div>
-            <div style={{ width: 1, background: 'rgba(255,255,255,0.15)' }} />
-            <div><div style={{ fontSize: 24, fontWeight: 800 }}>{fmt(stats.farms)}</div><div style={{ fontSize: 11, opacity: 0.5 }}>{lang === 'vi' ? 'Nông trại' : 'Farms'}</div></div>
-            <div style={{ width: 1, background: 'rgba(255,255,255,0.15)' }} />
-            <div><div style={{ fontSize: 24, fontWeight: 800 }}>{fmt(stats.communes)}</div><div style={{ fontSize: 11, opacity: 0.5 }}>{lang === 'vi' ? 'Xã' : 'Com.'}</div></div>
-          </div>
+        <div style={{ background: 'linear-gradient(145deg, #3E2723, #5D4037)', borderRadius: 16, padding: '24px 20px', marginBottom: 16, color: 'white' }}>
+          <div style={{ fontSize: 9, letterSpacing: 2.5, opacity: 0.35, textTransform: 'uppercase', marginBottom: 2 }}>SAFE — GIZ VIETNAM</div>
+          <div style={{ fontSize: 22, fontWeight: 800 }}>{provinceName}</div>
         </div>
 
-        {/* KPI row — horizontal scroll */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12, overflowX: 'auto', paddingBottom: 4 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
           {[
-            { icon: <MapPin size={14} />, val: stats.villages, lbl: lang === 'vi' ? 'Thôn' : 'Vlg' },
-            { icon: <Layers size={14} />, val: stats.groups, lbl: lang === 'vi' ? 'Nhóm' : 'Grp' },
-            { icon: <GraduationCap size={14} />, val: stats.trainings, lbl: lang === 'vi' ? 'Đào tạo' : 'Train' },
+            { val: stats.farmers, lbl: lang === 'vi' ? 'Nông dân' : 'Farmers', icon: <Users size={16} />, link: '/farmers' },
+            { val: stats.farms, lbl: lang === 'vi' ? 'Nông trại' : 'Farms', icon: <Mountain size={16} />, link: '/farms' },
+            { val: stats.communes, lbl: lang === 'vi' ? 'Xã' : 'Communes', icon: <CheckSquare size={16} />, link: '/geography' },
+            { val: stats.villages, lbl: lang === 'vi' ? 'Thôn/Bản' : 'Villages', icon: <MapPin size={16} />, link: '/geography' },
           ].map((k, i) => (
-            <div key={i} style={{
-              background: 'white', borderRadius: 10, padding: '10px 16px', minWidth: 80,
-              border: '1px solid #E8E0DB', textAlign: 'center', flexShrink: 0,
-            }}>
-              <div style={{ color: '#5D4037', marginBottom: 4 }}>{k.icon}</div>
-              <div style={{ fontSize: 18, fontWeight: 800, color: '#2C2C2C' }}>{fmt(k.val)}</div>
-              <div style={{ fontSize: 10, color: '#8D6E63', fontWeight: 600 }}>{k.lbl}</div>
+            <div key={i} onClick={() => navigate(k.link)} style={{ background: 'white', borderRadius: 14, padding: '16px', border: '1px solid #ECE7E3', cursor: 'pointer' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                <div style={{ width: 28, height: 28, borderRadius: 8, background: '#5D4037', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{k.icon}</div>
+                <span style={{ fontSize: 11, color: '#8D6E63', fontWeight: 600 }}>{k.lbl}</span>
+              </div>
+              <div style={{ fontSize: 26, fontWeight: 800, color: '#2C2C2C' }}>{fmt(k.val)}</div>
             </div>
           ))}
         </div>
 
-        {/* Quick Actions — compact list */}
-        <div style={{ background: 'white', borderRadius: 12, padding: '14px', border: '1px solid #E8E0DB', marginBottom: 12 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#3E2723', marginBottom: 10 }}>⚡ {lang === 'vi' ? 'Thao tác nhanh' : 'Quick Actions'}</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
-            {[
-              { icon: <Plus size={16} />, lbl: lang === 'vi' ? 'Nông dân' : 'Farmer', link: '/farmers' },
-              { icon: <Mountain size={16} />, lbl: lang === 'vi' ? 'Nông trại' : 'Farm', link: '/farms' },
-              { icon: <CheckSquare size={16} />, lbl: 'EUDR', link: '/eudr' },
-              { icon: <ShoppingCart size={16} />, lbl: lang === 'vi' ? 'Giao dịch' : 'Trade', link: '/trade' },
-            ].map((a, i) => (
-              <div key={i} onClick={() => navigate(a.link)} style={{
-                textAlign: 'center', cursor: 'pointer', padding: '8px 4px',
-                borderRadius: 10, background: '#FAFAF8', border: '1px solid #EFEBE9',
-              }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, background: '#5D4037', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px' }}>{a.icon}</div>
-                <div style={{ fontSize: 10, fontWeight: 600, color: '#5D4037' }}>{a.lbl}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Partners — compact */}
         {province === 'SL' && (
-          <div style={{ background: 'white', borderRadius: 12, padding: '14px', border: '1px solid #E8E0DB', marginBottom: 12 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#3E2723', marginBottom: 10 }}>🤝 {lang === 'vi' ? 'Đối tác' : 'Partners'}</div>
+          <div style={{ background: 'white', borderRadius: 14, border: '1px solid #ECE7E3', marginBottom: 16, overflow: 'hidden' }}>
+            <div style={{ padding: '14px 16px 0', fontSize: 13, fontWeight: 700, color: '#3E2723' }}>{lang === 'vi' ? 'Đối tác thu mua' : 'Partners'}</div>
             {[
               { code: 'DT', name: 'Detech Coffee', count: stats.detechFarmers, link: '/drill/detech' },
               { code: 'PS', name: 'Phúc Sinh', count: stats.phucsinhFarmers, link: '/drill/phucsinh' },
-            ].map((p, i) => (
-              <div key={p.code} onClick={() => navigate(p.link)} style={{
-                display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0',
-                borderTop: i > 0 ? '1px solid #F0EBE6' : 'none', cursor: 'pointer',
-              }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #5D4037, #8D6E63)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 12, fontWeight: 800 }}>{p.code}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: '#2C2C2C' }}>{p.name}</div>
-                </div>
-                <div style={{ fontSize: 18, fontWeight: 800, color: '#3E2723' }}>{fmt(p.count)}</div>
-                <ChevronRight size={16} color="#BCAAA4" />
+            ].map((p) => (
+              <div key={p.code} onClick={() => navigate(p.link)} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderTop: '1px solid #F0EBE6', cursor: 'pointer' }}>
+                <div style={{ width: 34, height: 34, borderRadius: 9, background: 'linear-gradient(135deg, #5D4037, #8D6E63)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 11, fontWeight: 800, flexShrink: 0 }}>{p.code}</div>
+                <div style={{ flex: 1 }}><div style={{ fontSize: 14, fontWeight: 700, color: '#2C2C2C' }}>{p.name}</div></div>
+                <div style={{ fontSize: 17, fontWeight: 800, color: '#3E2723' }}>{fmt(p.count)}</div>
+                <ChevronRight size={14} color="#BCAAA4" />
               </div>
             ))}
           </div>
         )}
 
-        {/* Nav links */}
-        <div style={{ background: 'white', borderRadius: 12, border: '1px solid #E8E0DB', overflow: 'hidden' }}>
+        <div style={{ background: 'white', borderRadius: 14, border: '1px solid #ECE7E3', overflow: 'hidden' }}>
           {[
+            { icon: <Plus size={16} />, label: lang === 'vi' ? 'Thêm nông dân' : 'Add Farmer', link: '/farmers' },
+            { icon: <Mountain size={16} />, label: lang === 'vi' ? 'Thêm nông trại' : 'Add Farm', link: '/farms' },
             { icon: <BarChart3 size={16} />, label: 'EUDR Compliance', link: '/eudr' },
+            { icon: <ShoppingCart size={16} />, label: lang === 'vi' ? 'Giao dịch' : 'Trade', link: '/trade' },
             { icon: <GraduationCap size={16} />, label: lang === 'vi' ? 'Đào tạo' : 'Training', link: '/training' },
             { icon: <FileText size={16} />, label: lang === 'vi' ? 'Báo cáo' : 'Reports', link: '/budget' },
           ].map((item, i) => (
-            <div key={i} onClick={() => navigate(item.link)} style={{
-              display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
-              borderTop: i > 0 ? '1px solid #F0EBE6' : 'none', cursor: 'pointer',
-            }}>
-              <div style={{ color: '#5D4037' }}>{item.icon}</div>
+            <div key={i} onClick={() => navigate(item.link)} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 16px', borderTop: i > 0 ? '1px solid #F0EBE6' : 'none', cursor: 'pointer' }}>
+              <div style={{ width: 30, height: 30, borderRadius: 8, background: '#F5F0EB', color: '#5D4037', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{item.icon}</div>
               <span style={{ fontSize: 14, fontWeight: 600, color: '#3E2723', flex: 1 }}>{item.label}</span>
-              <ChevronRight size={16} color="#BCAAA4" />
+              <ChevronRight size={14} color="#D7CCC8" />
             </div>
           ))}
         </div>
 
-        <div style={{ paddingTop: 12, textAlign: 'center', fontSize: 10, color: '#BCAAA4' }}>© 2026 SAFE Vietnam — GIZ</div>
+        <div style={{ paddingTop: 14, textAlign: 'center', fontSize: 10, color: '#BCAAA4' }}>© 2026 SAFE Vietnam — GIZ</div>
       </div>
     </div>
   );
