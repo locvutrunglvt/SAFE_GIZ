@@ -3,19 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#3E2723" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="HandheldFriendly" content="true" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <title>SAFE Vietnam — Nông nghiệp bền vững vì hệ sinh thái rừng</title>
-    <script type="module" crossorigin src="/assets/index-BxgfMgAh.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BlhCHIS-.css">
+    <!-- CRITICAL: Inline mobile font fix — loads before any CSS -->
+    <style>
+      @media (max-width: 768px) {
+        * { -webkit-text-size-adjust: 100% !important; box-sizing: border-box !important; }
+        html { touch-action: manipulation; }
+        body { font-size: 14px !important; line-height: 1.5 !important; overflow-x: hidden !important; }
+        [style*="font-size: 9"], [style*="font-size: 10"],
+        [style*="font-size: 11"], [style*="font-size: 12"],
+        [style*="font-size: 13"],
+        [style*="font-size:9"], [style*="font-size:10"],
+        [style*="font-size:11"], [style*="font-size:12"],
+        [style*="font-size:13"] {
+          font-size: 14px !important;
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-BG9HJRgH.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Cj-9ZWyX.css">
   </head>
   <body>
     <div id="root"></div>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <!-- KHÓA ZOOM: JS chặn pinch-zoom + double-tap trên Android Chrome -->
+    <script>
+      (function() {
+        // Block pinch zoom
+        document.addEventListener('touchstart', function(e) {
+          if (e.touches.length > 1) { e.preventDefault(); }
+        }, { passive: false });
+        // Block double-tap zoom
+        var lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+          var now = Date.now();
+          if (now - lastTouchEnd <= 300) { e.preventDefault(); }
+          lastTouchEnd = now;
+        }, { passive: false });
+        // Block ctrl+wheel zoom on desktop
+        document.addEventListener('wheel', function(e) {
+          if (e.ctrlKey) { e.preventDefault(); }
+        }, { passive: false });
+        // Block gesture events (iOS Safari)
+        document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+        document.addEventListener('gesturechange', function(e) { e.preventDefault(); });
+        document.addEventListener('gestureend', function(e) { e.preventDefault(); });
+      })();
+    </script>
   </body>
 </html>
