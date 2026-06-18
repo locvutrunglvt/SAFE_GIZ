@@ -111,6 +111,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  touch-action: manipulation;
 }
 
 body {
@@ -1574,78 +1577,151 @@ input, select, textarea {
 
 /* ── Smartphone (≤480px) ────────────────────────── */
 @media (max-width: 480px) {
-  .sidebar { transform: translateX(-100%); width: 260px; transition: transform 0.3s ease; }
-  .sidebar.mobile-open { transform: translateX(0); width: 260px; }
+  html { font-size: 15px; }
+
+  .sidebar { transform: translateX(-100%); width: 280px; transition: transform 0.3s ease; }
+  .sidebar.mobile-open { transform: translateX(0); width: 280px; }
   .sidebar.mobile-open .sidebar-logo-text,
   .sidebar.mobile-open .nav-item-label,
   .sidebar.mobile-open .sidebar-section-title { display: block; opacity: 1; width: auto; height: auto; }
+  .sidebar.mobile-open .nav-item { padding: 12px 16px; font-size: 15px; }
+  .sidebar.mobile-open .nav-item svg { width: 22px; height: 22px; }
 
   .sidebar-backdrop {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.5);
     z-index: 140;
     display: block;
   }
   .sidebar-backdrop.hidden { display: none; }
 
   .main-area { margin-left: 0 !important; }
-  .main-content { padding: 8px 10px; }
+  .main-content { padding: 12px 14px; }
 
-  .header { padding: 0 var(--space-sm); height: 52px; }
-  .header-left { gap: 6px; }
+  /* Header — bigger touch targets */
+  .header { padding: 0 12px; height: 56px; }
+  .header-left { gap: 8px; }
   .header-left > div:last-child { display: none; }
-  .breadcrumb { font-size: 11px; }
-  .lang-switcher { gap: 1px; }
-  .lang-btn { padding: 3px 8px; font-size: 10px; }
-  .header-btn { width: 32px; height: 32px; }
-  .user-avatar { width: 30px; height: 30px; font-size: 11px; }
+  .breadcrumb { font-size: 13px; font-weight: 500; }
+  .lang-switcher { gap: 2px; }
+  .lang-btn { padding: 6px 12px; font-size: 13px; min-height: 36px; }
+  .header-btn { width: 38px; height: 38px; }
+  .header-btn svg { width: 20px; height: 20px; }
+  .user-avatar { width: 34px; height: 34px; font-size: 13px; }
 
-  .page-header { margin-bottom: var(--space-md); }
-  .page-title { font-size: var(--font-size-lg); }
-  .page-subtitle { font-size: 11px; }
-  .page-actions .btn { padding: 7px 12px; font-size: 12px; }
+  /* Page header */
+  .page-header { margin-bottom: 16px; }
+  .page-title { font-size: 20px; font-weight: 700; }
+  .page-subtitle { font-size: 13px; color: var(--color-text-secondary); }
+  .page-actions .btn { padding: 10px 16px; font-size: 14px; min-height: 42px; }
+  .page-actions .btn svg { width: 18px; height: 18px; }
 
-  .province-select-page { padding: 12px; gap: 12px; overflow-y: auto; height: auto; min-height: 100vh; }
+  /* Province select */
+  .province-select-page { padding: 16px; gap: 16px; overflow-y: auto; height: auto; min-height: 100vh; }
   .province-cards { grid-template-columns: 1fr; gap: 16px; max-width: 100%; }
-  .province-header .giz-logo { width: 180px; }
-  .province-header .project-title { font-size: 18px; }
-  .province-header .project-subtitle { font-size: 12px; }
-  .province-header .project-desc { font-size: 11px; }
+  .province-header .giz-logo { width: 200px; }
+  .province-header .project-title { font-size: 20px; }
+  .province-header .project-subtitle { font-size: 14px; }
+  .province-header .project-desc { font-size: 13px; }
   .province-card { border-radius: 14px; }
-  .province-image-wrapper { height: 140px; }
-  .province-content { padding: 12px 14px; }
-  .province-name { font-size: 16px; }
-  .province-stats { flex-direction: column; gap: 6px; padding: 8px; }
-  .province-enter { padding: 8px; font-size: 13px; }
-  .province-footer { font-size: 10px; }
-  .province-select-page .lang-toggle { top: 10px; right: 10px; padding: 6px 14px; font-size: 12px; }
+  .province-image-wrapper { height: 150px; }
+  .province-content { padding: 14px 16px; }
+  .province-name { font-size: 18px; }
+  .province-stats { flex-direction: column; gap: 6px; padding: 10px; }
+  .province-enter { padding: 12px; font-size: 15px; min-height: 44px; }
+  .province-footer { font-size: 11px; }
+  .province-select-page .lang-toggle { top: 12px; right: 12px; padding: 8px 16px; font-size: 14px; }
 
-  .card { padding: 10px 12px; }
+  /* Cards — readable */
+  .card { padding: 14px 16px; border-radius: var(--radius-md); }
   .card:hover { transform: none; box-shadow: var(--shadow-glass); }
 
-  table th:first-child, table td:first-child { padding-left: 8px !important; }
+  /* Tables — bigger text, better spacing */
+  table { font-size: 13px; }
+  table th { font-size: 12px; font-weight: 700; padding: 10px 8px !important; }
+  table td { padding: 10px 8px !important; }
+  table th:first-child, table td:first-child { padding-left: 12px !important; }
 
-  /* Modal on phone — full screen */
-  [style*="position: fixed"][style*="inset: 0"] > div {
+  /* Buttons — min touch target 44px */
+  .btn { min-height: 42px; padding: 10px 16px; font-size: 14px; border-radius: 10px; }
+  .btn svg { width: 18px; height: 18px; }
+  .btn-sm { min-height: 36px; padding: 8px 12px; font-size: 13px; }
+
+  /* Modals on phone — FULL SCREEN */
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: stretch !important;
+  }
+  .modal, 
+  .modal-overlay > div:not(.sidebar-backdrop) {
     width: 100% !important;
     max-width: 100% !important;
     max-height: 100vh !important;
+    height: 100vh !important;
     border-radius: 0 !important;
     margin: 0 !important;
   }
+  .modal-header { padding: 14px 16px !important; }
+  .modal-header h2 { font-size: 17px !important; }
+  .modal-body { padding: 14px 16px !important; font-size: 14px; }
+  .modal-footer { padding: 12px 16px !important; }
 
-  /* Form */
-  .form-grid { grid-template-columns: 1fr; gap: 10px; }
-  .form-group input, .form-group select { padding: 8px 10px; font-size: 13px; }
-  .form-actions { flex-direction: column; }
-  .form-actions .btn { width: 100%; justify-content: center; }
+  /* Form — larger inputs for touch */
+  .form-grid { grid-template-columns: 1fr; gap: 12px; }
+  .form-group label { font-size: 13px; margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    padding: 12px 14px; font-size: 15px; min-height: 44px; border-radius: 10px;
+  }
+  .form-actions { flex-direction: column; gap: 10px; }
+  .form-actions .btn { width: 100%; justify-content: center; min-height: 46px; font-size: 15px; }
   .btn-delete { margin-right: 0; width: 100%; justify-content: center; }
 
-  /* Stats */
-  .stats-grid { grid-template-columns: 1fr; }
+  /* Stats grid — 2 cols */
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
 
-  /* Hide sidebar toggle arrow text on mobile */
+  /* Sidebar toggle text */
   .sidebar-toggle span:last-child { display: none; }
+
+  /* Search inputs — bigger */
+  input[type="text"], input[type="search"], input[type="number"], input[type="date"],
+  select, textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    min-height: 44px;
+  }
+
+  /* Action icon buttons — bigger touch area */
+  button[style*="padding: 4px 8px"],
+  button[style*="padding:4px 8px"] {
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 8px !important;
+  }
+  button[style*="padding: 4px 8px"] svg,
+  button[style*="padding:4px 8px"] svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Accordion sections — bigger touch */
+  button[style*="width: 100%"][style*="cursor: pointer"] {
+    min-height: 48px !important;
+    font-size: 15px !important;
+  }
+
+  /* Badge — readable */
+  span[style*="borderRadius: 12px"][style*="fontSize: 12px"] {
+    font-size: 13px !important;
+    padding: 5px 12px !important;
+  }
+
+  /* Progress bars — thicker */
+  div[style*="height: 6px"] {
+    height: 8px !important;
+    border-radius: 4px !important;
+  }
+  div[style*="height: 6px"] > div {
+    height: 8px !important;
+  }
 }
 
 /* ── Hamburger menu button (mobile only) ─────── */
@@ -1655,10 +1731,11 @@ input, select, textarea {
   border: none;
   color: var(--color-primary);
   cursor: pointer;
-  padding: 4px;
+  padding: 8px;
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .mobile-menu-btn { display: flex; align-items: center; }
+  .mobile-menu-btn svg { width: 24px; height: 24px; }
 }
 
 /* ══════════════════════════════════════════════════
