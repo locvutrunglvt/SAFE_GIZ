@@ -27,6 +27,7 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import SettingsPage from './pages/settings/SettingsPage';
+import MapPage from './pages/MapPage';
 
 function AppLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -71,6 +72,7 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/geography" element={<GeographyList />} />
+          <Route path="/map" element={<MapPage />} />
           <Route path="/farmers" element={<FarmerList />} />
           <Route path="/farmers/:id" element={<FarmerDetail />} />
           <Route path="/drill/:partner" element={<DrillDown />} />

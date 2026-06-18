@@ -1,10 +1,8 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Users, Mountain, ChevronRight, Sprout, Map as MapIcon } from 'lucide-react';
+import { MapPin, Users, Mountain, ChevronRight, Sprout } from 'lucide-react';
 import pb from '../lib/pocketbase';
-
-const ProvinceMap = lazy(() => import('../components/ProvinceMap'));
 
 interface ProvinceData {
   id: string; code: string; nameVi: string; nameEn: string;
@@ -37,7 +35,6 @@ export default function ProvinceSelect() {
   const { i18n } = useTranslation();
   const lang = i18n.language;
   const [provinces, setProvinces] = useState<ProvinceData[]>(defaultProvinces);
-  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     async function fetchStats() {
@@ -165,40 +162,6 @@ export default function ProvinceSelect() {
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Map Section */}
-      <div style={{ maxWidth: 1100, margin: '28px auto 0', padding: '0 20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 700, color: '#3E2723', margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <MapIcon size={20} color="#5D4037" />
-            {lang === 'vi' ? 'Bản đồ phạm vi hoạt động' : 'Project Coverage Map'}
-          </h2>
-          <button
-            onClick={() => setShowMap(!showMap)}
-            style={{
-              background: showMap ? '#5D4037' : 'white',
-              color: showMap ? 'white' : '#5D4037',
-              border: '1px solid #5D4037',
-              borderRadius: 8, padding: '8px 16px', cursor: 'pointer',
-              fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
-            }}
-          >
-            {showMap ? (lang === 'vi' ? 'Ẩn bản đồ' : 'Hide Map') : (lang === 'vi' ? 'Xem bản đồ' : 'Show Map')}
-          </button>
-        </div>
-
-        {showMap && (
-          <div style={{ height: 480, marginBottom: 20 }}>
-            <Suspense fallback={
-              <div style={{ height: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F5F0EB', borderRadius: 16 }}>
-                {lang === 'vi' ? 'Đang tải bản đồ...' : 'Loading map...'}
-              </div>
-            }>
-              <ProvinceMap lang={lang} onSelectProvince={handleSelect} />
-            </Suspense>
-          </div>
-        )}
       </div>
 
       {/* Footer */}

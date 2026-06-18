@@ -22,6 +22,7 @@ import {
   MapPin,
   ClipboardList,
   FileQuestion,
+  Map,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -41,6 +42,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { key: 'dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} />, section: 'main' },
   { key: 'geography', path: '/geography', icon: <Globe size={20} />, section: 'main' },
+  { key: 'map', path: '/map', icon: <Map size={20} />, section: 'main' },
   { key: 'farmers', path: '/farmers', icon: <Users size={20} />, section: 'management' },
   { key: 'farms', path: '/farms', icon: <Mountain size={20} />, section: 'management' },
   { key: 'eudr', path: '/eudr', icon: <CheckSquare size={20} />, section: 'management' },

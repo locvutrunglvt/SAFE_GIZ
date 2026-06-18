@@ -41,6 +41,7 @@ export default function Header({ onMobileMenuToggle }: { onMobileMenuToggle?: ()
       forms: t('menu.forms'),
       settings: t('menu.settings'),
       geography: t('menu.geography'),
+      map: t('menu.map'),
     };
     return labelMap[segment] || segment;
   };
