@@ -141,89 +141,57 @@ export default function Dashboard() {
 
   return (
     <div className="animate-in">
-      {/* Page Header */}
-      <div className="page-header">
-        <div>
-          <h1 className="page-title">{t('dashboard.title')}</h1>
-          <p className="page-subtitle">
-            {t('dashboard.subtitle')} — 📍 {provinceName}
-          </p>
-        </div>
+      {/* ── Compact Header ── */}
+      <div style={{ marginBottom: 20 }}>
+        <h1 style={{ fontSize: 22, fontWeight: 800, color: '#2C2C2C', margin: 0, lineHeight: 1.2 }}>
+          {t('dashboard.title')}
+        </h1>
+        <p style={{ fontSize: 14, color: '#8D6E63', margin: '4px 0 0', fontWeight: 500 }}>
+          📍 {provinceName} — {t('app.organization')}
+        </p>
       </div>
 
-      {/* Project Banner */}
-      <div
-        className="card"
-        style={{
-          marginBottom: 'var(--space-xl)',
-          background: 'linear-gradient(135deg, rgba(93,64,55,0.06) 0%, rgba(141,110,99,0.06) 100%)',
-          border: '1px solid var(--color-coffee)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-lg)' }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 12,
-            background: 'linear-gradient(135deg, #5D4037, #8D6E63)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-          }}>
-            <span style={{ fontSize: '24px' }}>🌿</span>
-          </div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 'var(--font-size-md)', color: '#5D4037' }}>
-              {t('app.fullName')}
-            </div>
-            <div style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-secondary)', marginTop: 2 }}>
-              {t('app.description')} — {t('app.organization')}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Grid — Icon LEFT, Data RIGHT */}
+      {/* ── Stats Grid — 2 cols on mobile, 3 on desktop ── */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: 'var(--space-md)',
-        marginBottom: 'var(--space-xl)',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: 10,
+        marginBottom: 20,
       }}>
         {statCards.map((card, i) => (
           <div
             key={i}
             onClick={() => navigate(card.link)}
+            className="stat-card-hover"
             style={{
               background: 'white',
-              borderRadius: 16,
-              padding: '20px 24px',
+              borderRadius: 12,
+              padding: '14px 16px',
               cursor: 'pointer',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-              border: '1px solid var(--color-coffee-light)',
+              border: '1px solid #E8E0DB',
               display: 'flex',
               alignItems: 'center',
-              gap: 16,
+              gap: 12,
+              transition: 'box-shadow 0.2s',
             }}
-            className="stat-card-hover"
           >
-            {/* Icon LEFT */}
             <div style={{
-              width: 52, height: 52, borderRadius: 14,
+              width: 40, height: 40, borderRadius: 10,
               background: card.gradient,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'white', flexShrink: 0,
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
             }}>
               {card.icon}
             </div>
-            {/* Data RIGHT */}
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{
-                fontSize: loading ? 16 : 28, fontWeight: 800, color: '#2C2C2C',
-                letterSpacing: '-0.02em', lineHeight: 1.1,
+                fontSize: loading ? 14 : 24, fontWeight: 800, color: '#2C2C2C',
+                lineHeight: 1.1,
               }}>
-                {loading ? '...' : card.value.toLocaleString()}
+                {loading ? '···' : card.value.toLocaleString()}
               </div>
               <div style={{
-                fontSize: 13, color: '#8D6E63', fontWeight: 500, marginTop: 4,
+                fontSize: 12, color: '#8D6E63', fontWeight: 500, marginTop: 2,
                 whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
               }}>
                 {card.label}
@@ -233,113 +201,155 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Partner Cards — CLICKABLE → lọc nông dân theo nhóm */}
-      {province === 'SL' && (
-        <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)',
-          marginBottom: 'var(--space-xl)',
-        }}>
-          <div
-            className="card stat-card-hover"
-            onClick={() => navigate('/drill/detech')}
-            style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer' }}
-          >
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg, #5D4037, #795548)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 16, fontWeight: 800, flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>DT</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: 15, color: '#3E2723' }}>Detech Coffee</div>
-              <div style={{ fontSize: 12, color: '#8D6E63' }}>{lang === 'vi' ? 'Đối tác thu mua — Sơn La' : 'Purchasing partner — Son La'}</div>
-              <div style={{ fontSize: 18, fontWeight: 800, color: '#5D4037', marginTop: 4 }}>{stats.detechFarmers.toLocaleString()} <span style={{ fontSize: 11, fontWeight: 500, color: '#8D6E63' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</span></div>
-            </div>
-            <div style={{ color: '#8D6E63', fontSize: 20 }}>→</div>
-          </div>
-          <div
-            className="card stat-card-hover"
-            onClick={() => navigate('/drill/phucsinh')}
-            style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer' }}
-          >
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg, #BF360C, #E64A19)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 16, fontWeight: 800, flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>PS</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: 15, color: '#3E2723' }}>Phúc Sinh (K Coffee)</div>
-              <div style={{ fontSize: 12, color: '#8D6E63' }}>{lang === 'vi' ? 'Đối tác thu mua — Sơn La' : 'Purchasing partner — Son La'}</div>
-              <div style={{ fontSize: 18, fontWeight: 800, color: '#BF360C', marginTop: 4 }}>{stats.phucsinhFarmers.toLocaleString()} <span style={{ fontSize: 11, fontWeight: 500, color: '#8D6E63' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</span></div>
-            </div>
-            <div style={{ color: '#8D6E63', fontSize: 20 }}>→</div>
-          </div>
-        </div>
-      )}
-
-      {/* Quick Actions — CLICKABLE */}
-      <div style={{ marginBottom: 'var(--space-lg)' }}>
-        <h2 style={{ fontSize: 'var(--font-size-lg)', fontWeight: 600, marginBottom: 'var(--space-md)' }}>
+      {/* ── Quick Actions — horizontal scroll strip ── */}
+      <div style={{ marginBottom: 20 }}>
+        <h2 style={{ fontSize: 16, fontWeight: 700, color: '#3E2723', marginBottom: 10 }}>
           {lang === 'vi' ? 'Thao tác nhanh' : 'Quick Actions'}
         </h2>
         <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 'var(--space-md)',
+          display: 'flex', gap: 10, overflowX: 'auto',
+          paddingBottom: 4, WebkitOverflowScrolling: 'touch' as any,
         }}>
           {quickActions.map((action, i) => (
             <div
               key={i}
               onClick={() => navigate(action.link)}
               style={{
-                background: 'white', borderRadius: 14, padding: '20px 12px',
-                textAlign: 'center', cursor: 'pointer',
-                border: '1px solid var(--color-coffee-light)',
-                transition: 'all 0.3s',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                flex: '0 0 auto',
+                display: 'flex', alignItems: 'center', gap: 8,
+                background: 'white', borderRadius: 10,
+                padding: '10px 14px',
+                cursor: 'pointer',
+                border: '1px solid #E8E0DB',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.2s',
+                fontSize: 13, fontWeight: 600, color: '#5D4037',
               }}
               className="stat-card-hover"
             >
               <div style={{
-                width: 40, height: 40, borderRadius: 10,
-                background: 'linear-gradient(135deg, #F5F0EB, #EFEBE9)',
+                width: 30, height: 30, borderRadius: 8,
+                background: '#F5F0EB',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 10px', color: '#5D4037',
+                color: '#5D4037', flexShrink: 0,
               }}>
                 {action.icon}
               </div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#5D4037' }}>{action.label}</div>
+              {action.label}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Info Cards */}
-      <div className="grid-2">
-        <div className="card" onClick={() => navigate('/farmers')} style={{ cursor: 'pointer' }}>
-          <div className="card-header">
-            <h3 className="card-title">
-              <FileText size={16} style={{ marginRight: '8px', verticalAlign: 'text-bottom' }} />
-              {lang === 'vi' ? 'Hoạt động gần đây' : 'Recent Activities'}
-            </h3>
-          </div>
-          <div className="card-body">
-            <div style={{ padding: '16px', color: 'var(--color-text-secondary)', fontSize: 13 }}>
-              {lang === 'vi'
-                ? `Đã import ${stats.farmers.toLocaleString()} nông hộ từ ${provinceName}`
-                : `Imported ${stats.farmers.toLocaleString()} farmers from ${provinceName}`}
+      {/* ── Partner Section — 1 column stack on mobile ── */}
+      {province === 'SL' && (
+        <div style={{ marginBottom: 20 }}>
+          <h2 style={{ fontSize: 16, fontWeight: 700, color: '#3E2723', marginBottom: 10 }}>
+            {lang === 'vi' ? 'Đối tác thu mua' : 'Purchasing Partners'}
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {/* Detech */}
+            <div
+              className="stat-card-hover"
+              onClick={() => navigate('/drill/detech')}
+              style={{
+                background: 'white', borderRadius: 12, padding: '14px 16px',
+                display: 'flex', alignItems: 'center', gap: 14,
+                cursor: 'pointer', border: '1px solid #E8E0DB',
+              }}
+            >
+              <div style={{
+                width: 44, height: 44, borderRadius: 12,
+                background: 'linear-gradient(135deg, #5D4037, #795548)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'white', fontSize: 15, fontWeight: 800, flexShrink: 0,
+              }}>DT</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 700, fontSize: 15, color: '#3E2723' }}>Detech Coffee</div>
+                <div style={{ fontSize: 12, color: '#8D6E63' }}>
+                  {lang === 'vi' ? 'Đối tác thu mua — Sơn La' : 'Purchasing partner — Son La'}
+                </div>
+              </div>
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontSize: 22, fontWeight: 800, color: '#5D4037', lineHeight: 1 }}>{stats.detechFarmers.toLocaleString()}</div>
+                <div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</div>
+              </div>
+            </div>
+            {/* Phuc Sinh */}
+            <div
+              className="stat-card-hover"
+              onClick={() => navigate('/drill/phucsinh')}
+              style={{
+                background: 'white', borderRadius: 12, padding: '14px 16px',
+                display: 'flex', alignItems: 'center', gap: 14,
+                cursor: 'pointer', border: '1px solid #E8E0DB',
+              }}
+            >
+              <div style={{
+                width: 44, height: 44, borderRadius: 12,
+                background: 'linear-gradient(135deg, #BF360C, #E64A19)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'white', fontSize: 15, fontWeight: 800, flexShrink: 0,
+              }}>PS</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 700, fontSize: 15, color: '#3E2723' }}>Phúc Sinh (K Coffee)</div>
+                <div style={{ fontSize: 12, color: '#8D6E63' }}>
+                  {lang === 'vi' ? 'Đối tác thu mua — Sơn La' : 'Purchasing partner — Son La'}
+                </div>
+              </div>
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontSize: 22, fontWeight: 800, color: '#BF360C', lineHeight: 1 }}>{stats.phucsinhFarmers.toLocaleString()}</div>
+                <div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="card" onClick={() => navigate('/eudr')} style={{ cursor: 'pointer' }}>
-          <div className="card-header">
-            <h3 className="card-title">
-              <BarChart3 size={16} style={{ marginRight: '8px', verticalAlign: 'text-bottom' }} />
-              EUDR Compliance
-            </h3>
+      )}
+
+      {/* ── Bottom Cards ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
+        <div
+          onClick={() => navigate('/farmers')}
+          style={{
+            background: 'white', borderRadius: 12, padding: '14px 16px',
+            cursor: 'pointer', border: '1px solid #E8E0DB',
+          }}
+          className="stat-card-hover"
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <FileText size={16} color="#5D4037" />
+            <span style={{ fontWeight: 700, fontSize: 14, color: '#3E2723' }}>
+              {lang === 'vi' ? 'Hoạt động gần đây' : 'Recent Activity'}
+            </span>
           </div>
-          <div className="card-body">
-            <div style={{ padding: '16px', color: 'var(--color-text-secondary)', fontSize: 13 }}>
-              {lang === 'vi' ? 'Nhấn để xem đánh giá EUDR' : 'Click to view EUDR assessments'}
-            </div>
+          <div style={{ fontSize: 13, color: '#8D6E63', lineHeight: 1.4 }}>
+            {lang === 'vi'
+              ? `Import ${stats.farmers.toLocaleString()} nông hộ`
+              : `Imported ${stats.farmers.toLocaleString()} farmers`}
+          </div>
+        </div>
+        <div
+          onClick={() => navigate('/eudr')}
+          style={{
+            background: 'white', borderRadius: 12, padding: '14px 16px',
+            cursor: 'pointer', border: '1px solid #E8E0DB',
+          }}
+          className="stat-card-hover"
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <BarChart3 size={16} color="#5D4037" />
+            <span style={{ fontWeight: 700, fontSize: 14, color: '#3E2723' }}>EUDR</span>
+          </div>
+          <div style={{ fontSize: 13, color: '#8D6E63', lineHeight: 1.4 }}>
+            {lang === 'vi' ? 'Xem đánh giá EUDR' : 'View EUDR assessments'}
           </div>
         </div>
       </div>
 
       {/* Footer */}
       <div style={{
-        marginTop: 'var(--space-2xl)', paddingTop: 'var(--space-md)',
-        borderTop: '1px solid var(--color-coffee)', textAlign: 'center',
-        fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)',
+        paddingTop: 12, borderTop: '1px solid #E8E0DB',
+        textAlign: 'center', fontSize: 12, color: '#A1887F',
       }}>
         {t('app.copyright')}
       </div>
