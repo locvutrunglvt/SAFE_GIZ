@@ -2,30 +2,14 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
-  Users,
-  Mountain,
-  MapPin,
-  CheckSquare,
-  ShoppingCart,
-  GraduationCap,
-  Plus,
-  FileText,
-  BarChart3,
-  Layers,
-  ArrowRight,
-  TrendingUp,
+  Users, Mountain, MapPin, CheckSquare, ShoppingCart,
+  GraduationCap, Plus, FileText, BarChart3, Layers, ArrowRight,
 } from 'lucide-react';
 import pb from '../lib/pocketbase';
 
 interface Stats {
-  farmers: number;
-  farms: number;
-  villages: number;
-  communes: number;
-  groups: number;
-  trainings: number;
-  detechFarmers: number;
-  phucsinhFarmers: number;
+  farmers: number; farms: number; villages: number; communes: number;
+  groups: number; trainings: number; detechFarmers: number; phucsinhFarmers: number;
 }
 
 export default function Dashboard() {
@@ -45,283 +29,231 @@ export default function Dashboard() {
           pb.collection('farmers').getList(1, 1, { filter: `code~"SAFEGIZ-${province}"` }),
           pb.collection('farms').getList(1, 1, { filter: `code~"SAFEGIZ-${province}"` }),
         ]);
-        const getValue = (r: PromiseSettledResult<any>) => r.status === 'fulfilled' ? r.value.totalItems : 0;
-
-        let villages = 0, communes = 0, groups = 0, trainings = 0;
+        const gv = (r: PromiseSettledResult<any>) => r.status === 'fulfilled' ? r.value.totalItems : 0;
         const extra = await Promise.allSettled([
           pb.collection('villages').getList(1, 1, { filter: `province_code="${province}"` }),
           pb.collection('communes').getList(1, 1, { filter: `province_code="${province}"` }),
           pb.collection('farmer_groups').getList(1, 1, { filter: `province_code="${province}"` }),
           pb.collection('trainings').getList(1, 1),
         ]);
-        villages = getValue(extra[0]);
-        communes = getValue(extra[1]);
-        groups = getValue(extra[2]);
-        trainings = getValue(extra[3]);
-
-        let detechFarmers = 0, phucsinhFarmers = 0;
+        let dF = 0, pF = 0;
         try {
-          const partnerResults = await Promise.allSettled([
+          const pr = await Promise.allSettled([
             pb.collection('farmers').getList(1, 1, { filter: `code~"SAFEGIZ-${province}" && (group_id.name~"Detech" || group_id.name~"CẦN BỔ SUNG")` }),
             pb.collection('farmers').getList(1, 1, { filter: `code~"SAFEGIZ-${province}" && (group_id.name~"Phúc Sinh" || group_id="")` }),
           ]);
-          detechFarmers = getValue(partnerResults[0]);
-          phucsinhFarmers = getValue(partnerResults[1]);
-        } catch { /* fallback */ }
-
-        setStats({ farmers: getValue(results[0]), farms: getValue(results[1]), villages, communes, groups, trainings, detechFarmers, phucsinhFarmers });
+          dF = gv(pr[0]); pF = gv(pr[1]);
+        } catch {}
+        setStats({ farmers: gv(results[0]), farms: gv(results[1]), villages: gv(extra[0]), communes: gv(extra[1]), groups: gv(extra[2]), trainings: gv(extra[3]), detechFarmers: dF, phucsinhFarmers: pF });
       } catch (e) { console.error(e); }
       setLoading(false);
     }
     fetchStats();
   }, [province]);
 
-  /* ── Premium Stat Cards with gradients ── */
-  const mainStats = [
-    {
-      icon: <Users size={22} />, label: lang === 'vi' ? 'Nông dân' : 'Farmers',
-      value: stats.farmers, bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      shadow: 'rgba(102,126,234,0.4)', link: '/farmers',
-    },
-    {
-      icon: <Mountain size={22} />, label: lang === 'vi' ? 'Nông trại' : 'Farms',
-      value: stats.farms, bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      shadow: 'rgba(245,87,108,0.4)', link: '/farms',
-    },
-    {
-      icon: <MapPin size={22} />, label: lang === 'vi' ? 'Thôn/Bản' : 'Villages',
-      value: stats.villages, bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      shadow: 'rgba(79,172,254,0.4)', link: '/geography',
-    },
-    {
-      icon: <CheckSquare size={22} />, label: lang === 'vi' ? 'Xã' : 'Communes',
-      value: stats.communes, bg: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      shadow: 'rgba(67,233,123,0.4)', link: '/geography',
-    },
+  const kpis = [
+    { icon: <Users size={20} />, label: lang === 'vi' ? 'Nông dân' : 'Farmers', value: stats.farmers, link: '/farmers' },
+    { icon: <Mountain size={20} />, label: lang === 'vi' ? 'Nông trại' : 'Farms', value: stats.farms, link: '/farms' },
+    { icon: <MapPin size={20} />, label: lang === 'vi' ? 'Thôn/Bản' : 'Villages', value: stats.villages, link: '/geography' },
+    { icon: <CheckSquare size={20} />, label: lang === 'vi' ? 'Xã' : 'Communes', value: stats.communes, link: '/geography' },
+    { icon: <Layers size={20} />, label: lang === 'vi' ? 'Nhóm' : 'Groups', value: stats.groups, link: '/farmers' },
+    { icon: <GraduationCap size={20} />, label: lang === 'vi' ? 'Đào tạo' : 'Training', value: stats.trainings, link: '/training' },
   ];
 
-  const secondaryStats = [
-    {
-      icon: <Layers size={18} />, label: lang === 'vi' ? 'Nhóm nông dân' : 'Groups',
-      value: stats.groups, color: '#BF360C', link: '/farmers',
-    },
-    {
-      icon: <GraduationCap size={18} />, label: lang === 'vi' ? 'Đào tạo' : 'Training',
-      value: stats.trainings, color: '#5D4037', link: '/training',
-    },
+  const actions = [
+    { icon: <Plus size={15} />, label: lang === 'vi' ? 'Thêm nông dân' : 'Add Farmer', link: '/farmers' },
+    { icon: <Mountain size={15} />, label: lang === 'vi' ? 'Thêm nông trại' : 'Add Farm', link: '/farms' },
+    { icon: <CheckSquare size={15} />, label: lang === 'vi' ? 'EUDR' : 'EUDR', link: '/eudr' },
+    { icon: <ShoppingCart size={15} />, label: lang === 'vi' ? 'Giao dịch' : 'Trade', link: '/trade' },
+    { icon: <GraduationCap size={15} />, label: lang === 'vi' ? 'Đào tạo' : 'Training', link: '/training' },
+    { icon: <BarChart3 size={15} />, label: lang === 'vi' ? 'Báo cáo' : 'Reports', link: '/budget' },
   ];
 
-  const quickActions = [
-    { icon: <Plus size={16} />, label: lang === 'vi' ? 'Thêm nông dân' : 'Add Farmer', link: '/farmers', accent: '#667eea' },
-    { icon: <Mountain size={16} />, label: lang === 'vi' ? 'Thêm nông trại' : 'Add Farm', link: '/farms', accent: '#f5576c' },
-    { icon: <CheckSquare size={16} />, label: lang === 'vi' ? 'Đánh giá EUDR' : 'EUDR', link: '/eudr', accent: '#43e97b' },
-    { icon: <ShoppingCart size={16} />, label: lang === 'vi' ? 'Giao dịch' : 'Trade', link: '/trade', accent: '#4facfe' },
-    { icon: <GraduationCap size={16} />, label: lang === 'vi' ? 'Đào tạo' : 'Training', link: '/training', accent: '#f093fb' },
-    { icon: <BarChart3 size={16} />, label: lang === 'vi' ? 'Báo cáo' : 'Reports', link: '/budget', accent: '#fa709a' },
-  ];
+  /* 3D card style */
+  const kpi3D = (idx: number): React.CSSProperties => ({
+    background: 'linear-gradient(145deg, #FFFFFF 0%, #F8F5F2 100%)',
+    borderRadius: 14,
+    padding: '18px 20px',
+    cursor: 'pointer',
+    position: 'relative',
+    overflow: 'hidden',
+    /* 3D depth */
+    boxShadow: '0 6px 0 #D7CCC8, 0 8px 16px rgba(62,39,35,0.12), inset 0 1px 0 rgba(255,255,255,0.9)',
+    border: '1px solid #E8E0DB',
+    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    transform: 'translateY(0)',
+  });
 
   return (
-    <div className="animate-in" style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <div className="animate-in" style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 80px)' }}>
 
-      {/* ══════════ HERO BANNER ══════════ */}
+      {/* ═══ HEADER BAR ═══ */}
       <div style={{
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #533483 100%)',
-        borderRadius: 20, padding: '32px 36px', marginBottom: 28,
-        color: 'white', position: 'relative', overflow: 'hidden',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+        background: 'linear-gradient(135deg, #3E2723 0%, #4E342E 50%, #5D4037 100%)',
+        borderRadius: 14, padding: '20px 28px', marginBottom: 18,
+        color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        boxShadow: '0 4px 16px rgba(62,39,35,0.25)',
       }}>
-        {/* Decorative circles */}
-        <div style={{ position: 'absolute', top: -60, right: -30, width: 200, height: 200, borderRadius: '50%', background: 'rgba(102,126,234,0.15)' }} />
-        <div style={{ position: 'absolute', bottom: -40, right: 120, width: 140, height: 140, borderRadius: '50%', background: 'rgba(245,87,108,0.1)' }} />
-        <div style={{ position: 'absolute', top: 20, right: 200, width: 80, height: 80, borderRadius: '50%', background: 'rgba(79,172,254,0.08)' }} />
-
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.6, marginBottom: 8 }}>
-              SAFE — GIZ VIETNAM
-            </div>
-            <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0, lineHeight: 1.2 }}>
-              {t('dashboard.title')}
-            </h1>
-            <p style={{ fontSize: 14, opacity: 0.7, margin: '8px 0 0', maxWidth: 400 }}>
-              📍 {provinceName} — {lang === 'vi' ? 'Nông nghiệp bền vững vì hệ sinh thái rừng' : 'Sustainable Agriculture for Forest Ecosystems'}
-            </p>
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', opacity: 0.5, marginBottom: 4 }}>
+            SAFE — GIZ VIETNAM
           </div>
-          <div style={{
-            display: 'flex', gap: 20, background: 'rgba(255,255,255,0.08)',
-            borderRadius: 14, padding: '14px 22px', backdropFilter: 'blur(10px)',
-          }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 24, fontWeight: 800 }}>{loading ? '—' : stats.farmers.toLocaleString()}</div>
-              <div style={{ fontSize: 11, opacity: 0.6, marginTop: 2 }}>{lang === 'vi' ? 'Nông dân' : 'Farmers'}</div>
-            </div>
-            <div style={{ width: 1, background: 'rgba(255,255,255,0.15)' }} />
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 24, fontWeight: 800 }}>{loading ? '—' : stats.farms.toLocaleString()}</div>
-              <div style={{ fontSize: 11, opacity: 0.6, marginTop: 2 }}>{lang === 'vi' ? 'Nông trại' : 'Farms'}</div>
-            </div>
+          <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>{t('dashboard.title')}</h1>
+          <p style={{ fontSize: 13, opacity: 0.6, margin: '4px 0 0' }}>📍 {provinceName}</p>
+        </div>
+        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>{loading ? '—' : stats.farmers.toLocaleString()}</div>
+            <div style={{ fontSize: 10, opacity: 0.5 }}>{lang === 'vi' ? 'Nông dân' : 'Farmers'}</div>
+          </div>
+          <div style={{ width: 1, height: 30, background: 'rgba(255,255,255,0.15)' }} />
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>{loading ? '—' : stats.farms.toLocaleString()}</div>
+            <div style={{ fontSize: 10, opacity: 0.5 }}>{lang === 'vi' ? 'Nông trại' : 'Farms'}</div>
           </div>
         </div>
       </div>
 
-      {/* ══════════ MAIN STATS — colored gradient cards ══════════ */}
+      {/* ═══ KPI GRID — 6 cards 3D ═══ */}
       <div className="dashboard-stats-grid" style={{
-        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20,
+        display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 14, marginBottom: 18,
       }}>
-        {mainStats.map((s, i) => (
-          <div key={i} onClick={() => navigate(s.link)} style={{
-            background: s.bg, borderRadius: 16, padding: '22px 24px', cursor: 'pointer',
-            color: 'white', position: 'relative', overflow: 'hidden',
-            boxShadow: `0 6px 20px ${s.shadow}`, transition: 'transform 0.2s, box-shadow 0.2s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = `0 10px 30px ${s.shadow}`; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = `0 6px 20px ${s.shadow}`; }}
-          >
-            <div style={{ position: 'absolute', top: -15, right: -15, width: 70, height: 70, borderRadius: '50%', background: 'rgba(255,255,255,0.12)' }} />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {s.icon}
-              </div>
-              <TrendingUp size={14} style={{ opacity: 0.5, marginLeft: 'auto' }} />
-            </div>
-            <div style={{ fontSize: 32, fontWeight: 800, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
-              {loading ? '···' : s.value.toLocaleString()}
-            </div>
-            <div style={{ fontSize: 13, opacity: 0.85, marginTop: 6, fontWeight: 500 }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Secondary stats — inline */}
-      <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-        {secondaryStats.map((s, i) => (
-          <div key={i} onClick={() => navigate(s.link)} style={{
-            flex: 1, background: 'white', borderRadius: 12, padding: '16px 20px',
-            display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer',
-            border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-            transition: 'all 0.2s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)'; e.currentTarget.style.transform = 'none'; }}
-          >
-            <div style={{ width: 40, height: 40, borderRadius: 10, background: `${s.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.color }}>
-              {s.icon}
-            </div>
-            <div>
-              <div style={{ fontSize: 22, fontWeight: 800, color: '#1A1A1A' }}>{loading ? '···' : s.value}</div>
-              <div style={{ fontSize: 12, color: '#8D6E63', fontWeight: 500 }}>{s.label}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ══════════ QUICK ACTIONS ══════════ */}
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>
-          {lang === 'vi' ? '⚡ Thao tác nhanh' : '⚡ Quick Actions'}
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10 }}>
-          {quickActions.map((a, i) => (
-            <div key={i} onClick={() => navigate(a.link)} style={{
-              background: 'white', borderRadius: 12, padding: '14px 12px',
-              textAlign: 'center', cursor: 'pointer',
-              border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
-              transition: 'all 0.2s',
+        {kpis.map((k, i) => (
+          <div
+            key={i}
+            onClick={() => navigate(k.link)}
+            style={kpi3D(i)}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 10px 0 #BCAAA4, 0 14px 28px rgba(62,39,35,0.18), inset 0 1px 0 rgba(255,255,255,0.9)';
             }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = a.accent; e.currentTarget.style.boxShadow = `0 4px 14px ${a.accent}25`; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)'; e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.03)'; e.currentTarget.style.transform = 'none'; }}
-            >
-              <div style={{
-                width: 38, height: 38, borderRadius: 10,
-                background: `${a.accent}12`, color: a.accent,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 8px',
-              }}>{a.icon}</div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#3E2723' }}>{a.label}</div>
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 6px 0 #D7CCC8, 0 8px 16px rgba(62,39,35,0.12), inset 0 1px 0 rgba(255,255,255,0.9)';
+            }}
+          >
+            {/* Top accent bar */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #5D4037, #8D6E63)', borderRadius: '14px 14px 0 0' }} />
+            <div style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: 'linear-gradient(135deg, #5D4037, #8D6E63)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'white', marginBottom: 12,
+              boxShadow: '0 3px 8px rgba(93,64,55,0.3)',
+            }}>
+              {k.icon}
             </div>
-          ))}
-        </div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: '#2C2C2C', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+              {loading ? '···' : k.value.toLocaleString()}
+            </div>
+            <div style={{ fontSize: 12, color: '#8D6E63', fontWeight: 600, marginTop: 5 }}>{k.label}</div>
+          </div>
+        ))}
       </div>
 
-      {/* ══════════ PARTNERS + OVERVIEW ══════════ */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-        {/* Partners */}
-        {province === 'SL' ? (
-          <div style={{ background: 'white', borderRadius: 16, padding: '22px 24px', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#1A1A1A', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <ShoppingCart size={16} color="#5D4037" />
-              {lang === 'vi' ? 'Đối tác thu mua' : 'Partners'}
-            </h3>
-            {[
-              { code: 'DT', name: 'Detech Coffee', count: stats.detechFarmers, bg: 'linear-gradient(135deg, #667eea, #764ba2)', link: '/drill/detech' },
-              { code: 'PS', name: 'Phúc Sinh (K Coffee)', count: stats.phucsinhFarmers, bg: 'linear-gradient(135deg, #f5576c, #ff6b6b)', link: '/drill/phucsinh' },
-            ].map(p => (
-              <div key={p.code} onClick={() => navigate(p.link)} style={{
-                display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0',
-                borderBottom: '1px solid rgba(0,0,0,0.04)', cursor: 'pointer',
-              }}>
-                <div style={{ width: 42, height: 42, borderRadius: 10, background: p.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 14, fontWeight: 800, flexShrink: 0 }}>{p.code}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, fontSize: 15, color: '#1A1A1A' }}>{p.name}</div>
-                  <div style={{ fontSize: 12, color: '#8D6E63' }}>{lang === 'vi' ? 'Đối tác thu mua' : 'Partner'}</div>
+      {/* ═══ MIDDLE: Quick Actions + Partners (side by side) ═══ */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, flex: 1, minHeight: 0 }}>
+
+        {/* LEFT — Quick Actions */}
+        <div style={{
+          background: 'white', borderRadius: 14, padding: '18px 20px',
+          border: '1px solid #E8E0DB',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+        }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#3E2723', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+            ⚡ {lang === 'vi' ? 'Thao tác nhanh' : 'Quick Actions'}
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+            {actions.map((a, i) => (
+              <div key={i} onClick={() => navigate(a.link)} style={{
+                background: '#FAFAF8', borderRadius: 10, padding: '14px 10px',
+                textAlign: 'center', cursor: 'pointer',
+                border: '1px solid #EFEBE9', transition: 'all 0.15s',
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#F5F0EB'; e.currentTarget.style.borderColor = '#D7CCC8'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.06)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#FAFAF8'; e.currentTarget.style.borderColor = '#EFEBE9'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: '#5D4037', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px', boxShadow: '0 2px 6px rgba(93,64,55,0.3)' }}>
+                  {a.icon}
                 </div>
-                <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div>
-                    <div style={{ fontSize: 20, fontWeight: 800, color: '#1A1A1A' }}>{p.count.toLocaleString()}</div>
-                    <div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</div>
-                  </div>
-                  <ArrowRight size={14} color="#A1887F" />
-                </div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: '#5D4037' }}>{a.label}</div>
               </div>
             ))}
           </div>
-        ) : <div />}
 
-        {/* Overview */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div onClick={() => navigate('/farmers')} style={{
-            flex: 1, background: 'linear-gradient(135deg, #667eea08, #764ba212)',
-            borderRadius: 16, padding: '22px 24px', cursor: 'pointer',
-            border: '1px solid rgba(102,126,234,0.15)', transition: 'all 0.2s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(102,126,234,0.12)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: '#667eea18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <FileText size={16} color="#667eea" />
-              </div>
-              <span style={{ fontWeight: 700, fontSize: 14, color: '#1A1A1A' }}>
-                {lang === 'vi' ? 'Hoạt động gần đây' : 'Recent Activity'}
-              </span>
+          {/* Activity mini */}
+          <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #EFEBE9' }}>
+            <div onClick={() => navigate('/eudr')} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '8px 0' }}>
+              <BarChart3 size={16} color="#5D4037" />
+              <span style={{ fontSize: 13, color: '#5D4037', fontWeight: 600 }}>EUDR Compliance</span>
+              <ArrowRight size={14} color="#A1887F" style={{ marginLeft: 'auto' }} />
             </div>
-            <div style={{ fontSize: 14, color: '#5D4037', lineHeight: 1.5 }}>
-              {lang === 'vi' ? `Import ${stats.farmers.toLocaleString()} nông hộ từ ${provinceName}` : `Imported ${stats.farmers.toLocaleString()} farmers from ${provinceName}`}
+            <div onClick={() => navigate('/farmers')} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', padding: '8px 0' }}>
+              <FileText size={16} color="#5D4037" />
+              <span style={{ fontSize: 13, color: '#8D6E63' }}>
+                {lang === 'vi' ? `Import ${stats.farmers.toLocaleString()} nông hộ` : `${stats.farmers.toLocaleString()} farmers imported`}
+              </span>
+              <ArrowRight size={14} color="#A1887F" style={{ marginLeft: 'auto' }} />
             </div>
           </div>
-          <div onClick={() => navigate('/eudr')} style={{
-            flex: 1, background: 'linear-gradient(135deg, #43e97b08, #38f9d712)',
-            borderRadius: 16, padding: '22px 24px', cursor: 'pointer',
-            border: '1px solid rgba(67,233,123,0.15)', transition: 'all 0.2s',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(67,233,123,0.12)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: '#43e97b18', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <BarChart3 size={16} color="#2E7D32" />
+        </div>
+
+        {/* RIGHT — Partners */}
+        <div style={{
+          background: 'white', borderRadius: 14, padding: '18px 20px',
+          border: '1px solid #E8E0DB',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+        }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#3E2723', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <ShoppingCart size={15} color="#5D4037" />
+            {lang === 'vi' ? 'Đối tác thu mua' : 'Partners'}
+          </h3>
+
+          {province === 'SL' && [
+            { code: 'DT', name: 'Detech Coffee', desc: lang === 'vi' ? 'Đối tác — Sơn La' : 'Partner — Son La', count: stats.detechFarmers, link: '/drill/detech' },
+            { code: 'PS', name: 'Phúc Sinh', desc: lang === 'vi' ? 'K Coffee — Sơn La' : 'K Coffee — Son La', count: stats.phucsinhFarmers, link: '/drill/phucsinh' },
+          ].map(p => (
+            <div key={p.code} onClick={() => navigate(p.link)} style={{
+              display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0',
+              borderBottom: '1px solid #EFEBE9', cursor: 'pointer',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = '#FAFAF8'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div style={{
+                width: 44, height: 44, borderRadius: 12,
+                background: 'linear-gradient(135deg, #5D4037, #8D6E63)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'white', fontSize: 14, fontWeight: 800, flexShrink: 0,
+                boxShadow: '0 3px 8px rgba(93,64,55,0.25)',
+              }}>{p.code}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: 15, color: '#2C2C2C' }}>{p.name}</div>
+                <div style={{ fontSize: 12, color: '#8D6E63' }}>{p.desc}</div>
               </div>
-              <span style={{ fontWeight: 700, fontSize: 14, color: '#1A1A1A' }}>EUDR Compliance</span>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: 22, fontWeight: 800, color: '#3E2723' }}>{p.count.toLocaleString()}</div>
+                <div style={{ fontSize: 11, color: '#A1887F' }}>{lang === 'vi' ? 'nông hộ' : 'farmers'}</div>
+              </div>
             </div>
-            <div style={{ fontSize: 14, color: '#5D4037', lineHeight: 1.5 }}>
-              {lang === 'vi' ? 'Đánh giá tuân thủ quy định chống phá rừng EU' : 'EU Deforestation Regulation compliance'}
+          ))}
+
+          {/* Summary stats */}
+          <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #EFEBE9', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <div style={{ background: '#FAFAF8', borderRadius: 10, padding: '12px 14px', textAlign: 'center' }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: '#3E2723' }}>{provinceName}</div>
+              <div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'Tỉnh hoạt động' : 'Province'}</div>
+            </div>
+            <div style={{ background: '#FAFAF8', borderRadius: 10, padding: '12px 14px', textAlign: 'center' }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: '#3E2723' }}>{loading ? '—' : (stats.detechFarmers + stats.phucsinhFarmers).toLocaleString()}</div>
+              <div style={{ fontSize: 11, color: '#8D6E63' }}>{lang === 'vi' ? 'Tổng nông hộ' : 'Total'}</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div style={{ paddingTop: 16, borderTop: '1px solid rgba(0,0,0,0.06)', textAlign: 'center', fontSize: 12, color: '#A1887F' }}>
+      <div style={{ paddingTop: 10, textAlign: 'center', fontSize: 11, color: '#BCAAA4', marginTop: 10 }}>
         {t('app.copyright')}
       </div>
     </div>

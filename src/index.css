@@ -1530,7 +1530,12 @@ input, select, textarea {
   border-color: rgba(93,64,55,0.15) !important;
 }
 
-/* Dashboard responsive: 2 cols on mobile */
+/* Dashboard responsive */
+@media (max-width: 1024px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
 @media (max-width: 768px) {
   .dashboard-stats-grid {
     grid-template-columns: repeat(2, 1fr) !important;
