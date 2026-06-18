@@ -337,7 +337,7 @@ export default function FarmerList() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
               <tr style={{ background: '#F5F0EB', borderBottom: '2px solid #D7CCC8' }}>
-                {['#', lang === 'vi' ? 'Mã' : 'Code', lang === 'vi' ? 'Họ và tên' : 'Full Name',
+                {['#', lang === 'vi' ? 'Họ và tên' : 'Full Name',
                   lang === 'vi' ? 'Giới tính' : 'Gender', lang === 'vi' ? 'Năm sinh' : 'Birth Year',
                   'CCCD', lang === 'vi' ? 'Điện thoại' : 'Phone',
                   lang === 'vi' ? 'Thôn/Bản' : 'Village', lang === 'vi' ? 'Nhóm' : 'Group',
@@ -349,11 +349,11 @@ export default function FarmerList() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={10} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
+                <tr><td colSpan={9} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
                   {lang === 'vi' ? 'Đang tải...' : 'Loading...'}
                 </td></tr>
               ) : farmers.length === 0 ? (
-                <tr><td colSpan={10} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
+                <tr><td colSpan={9} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
                   {lang === 'vi' ? 'Không có dữ liệu' : 'No data'}
                 </td></tr>
               ) : farmers.map((f, idx) => (
@@ -366,7 +366,6 @@ export default function FarmerList() {
                    onMouseLeave={e => (e.currentTarget.style.background = idx % 2 === 0 ? 'white' : '#FAFAF8')}
                    onClick={() => navigate(`/farmers/${f.id}`)}>
                   <td style={{ padding: '10px', color: '#A1887F' }}>{(page - 1) * 20 + idx + 1}</td>
-                  <td style={{ padding: '10px', fontWeight: 600, color: '#5D4037', fontFamily: 'monospace', fontSize: 12 }}>{f.code}</td>
                   <td style={{ padding: '10px', fontWeight: 600, color: '#2C2C2C' }}>{f.full_name}</td>
                   <td style={{ padding: '10px' }}>
                     <span style={{

@@ -550,7 +550,6 @@ export default function EUDRCompliance() {
                   '#',
                   lang === 'vi' ? 'Mã ĐG' : 'Code',
                   lang === 'vi' ? 'Nông dân' : 'Farmer',
-                  lang === 'vi' ? 'Nông trại' : 'Farm',
                   lang === 'vi' ? 'Ngày ĐG' : 'Date',
                   lang === 'vi' ? 'Tiến độ' : 'Progress',
                   lang === 'vi' ? 'Trạng thái' : 'Status',
@@ -565,13 +564,13 @@ export default function EUDRCompliance() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={8} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
+                  <td colSpan={7} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
                     {lang === 'vi' ? 'Đang tải...' : 'Loading...'}
                   </td>
                 </tr>
               ) : assessments.length === 0 ? (
                 <tr>
-                  <td colSpan={8} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
+                  <td colSpan={7} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
                     <ClipboardList size={32} style={{ opacity: 0.3, marginBottom: 8 }} /><br />
                     {lang === 'vi' ? 'Chưa có đánh giá EUDR Compliance' : 'No EUDR Compliance assessments yet'}
                   </td>
@@ -599,14 +598,7 @@ export default function EUDRCompliance() {
                         {a.expand?.farmer_id?.full_name || '—'}
                       </span>
                     </td>
-                    <td style={{ padding: '10px' }}>
-                      <span
-                        style={{ fontSize: 12, cursor: 'pointer', color: '#8D6E63', textDecoration: 'underline', textDecorationColor: '#D7CCC8' }}
-                        onClick={e => { e.stopPropagation(); if (a.farm_id) navigate(`/farms/${a.farm_id}`); }}
-                      >
-                        {a.expand?.farm_id?.code || '—'}
-                      </span>
-                    </td>
+
                     <td style={{ padding: '10px', fontSize: 11, color: '#8D6E63' }}>{a.assessment_date?.slice(0, 10) || '—'}</td>
                     <td style={{ padding: '10px', minWidth: 130 }}>
                       {renderProgressBar(answered)}

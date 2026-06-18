@@ -219,8 +219,7 @@ export default function FarmList() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
             <thead>
               <tr style={{ background: '#F5F0EB', borderBottom: '2px solid #D7CCC8' }}>
-                {['#', lang === 'vi' ? 'Mã Farm' : 'Farm Code', lang === 'vi' ? 'Mã nông dân' : 'Farmer Code',
-                  lang === 'vi' ? 'Tên nông dân' : 'Farmer Name',
+                {['#', lang === 'vi' ? 'Tên nông dân' : 'Farmer Name',
                   lang === 'vi' ? 'DT Cà phê (ha)' : 'Coffee Area (ha)',
                   lang === 'vi' ? 'Số vườn' : 'Plots', 'Polygon', ''
                 ].map((h, i) => (
@@ -230,9 +229,9 @@ export default function FarmList() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>{lang === 'vi' ? 'Đang tải...' : 'Loading...'}</td></tr>
+                <tr><td colSpan={6} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>{lang === 'vi' ? 'Đang tải...' : 'Loading...'}</td></tr>
               ) : farms.length === 0 ? (
-                <tr><td colSpan={8} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
+                <tr><td colSpan={6} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
                   <MapPin size={32} style={{ opacity: 0.3, marginBottom: 8 }} /><br/>
                   {lang === 'vi' ? 'Chưa có nông trại nào' : 'No farms yet'}
                 </td></tr>
@@ -242,9 +241,6 @@ export default function FarmList() {
                 }} onMouseEnter={e => (e.currentTarget.style.background = '#F5F0EB')}
                    onMouseLeave={e => (e.currentTarget.style.background = idx % 2 === 0 ? 'white' : '#FAFAF8')}>
                   <td style={{ padding: '10px', color: '#A1887F' }}>{(page - 1) * 20 + idx + 1}</td>
-                  <td style={{ padding: '10px', fontWeight: 600, color: '#5D4037', fontFamily: 'monospace', fontSize: 12 }}>{f.code}</td>
-                  <td style={{ padding: '10px', fontFamily: 'monospace', fontSize: 12, color: '#8D6E63', cursor: 'pointer', textDecoration: 'underline' }}
-                    onClick={() => f.farmer_id && navigate(`/farmers/${f.farmer_id}`)}>{f.expand?.farmer_id?.code || '-'}</td>
                   <td style={{ padding: '10px', fontWeight: 500, cursor: 'pointer', color: '#5D4037', textDecoration: 'underline' }}
                     onClick={() => f.farmer_id && navigate(`/farmers/${f.farmer_id}`)}>{f.expand?.farmer_id?.full_name || '-'}</td>
                   <td style={{ padding: '10px', fontWeight: 600 }}>{f.coffee_area ? f.coffee_area.toFixed(2) : '-'}</td>

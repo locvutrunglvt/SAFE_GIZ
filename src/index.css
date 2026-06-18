@@ -1520,6 +1520,77 @@ input, select, textarea {
 }
 
 /* ══════════════════════════════════════════════════
+   EXCEL-STYLE TABLES — Áp dụng toàn bộ PC + Mobile
+   ══════════════════════════════════════════════════ */
+
+/* Wrapper — cuộn dọc + ngang */
+.card:has(table),
+div:has(> table) {
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch;
+  max-height: 70vh;
+  position: relative;
+}
+
+/* Table base — kiểu Excel */
+table {
+  width: 100%;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  font-size: 14px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  border: 1px solid #D7CCC8;
+}
+
+/* Header — freeze/đóng băng */
+table thead {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+}
+table th {
+  background: #D7CCC8 !important;
+  color: #3E2723 !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 10px 12px !important;
+  border: 1px solid #BCAAA4 !important;
+  white-space: nowrap !important;
+  text-align: left;
+  user-select: none;
+}
+
+/* Rows — sọc xen kẽ kiểu Excel */
+table tbody tr:nth-child(odd) {
+  background: #FFFFFF;
+}
+table tbody tr:nth-child(even) {
+  background: #FBF9F7;
+}
+table tbody tr:hover {
+  background: #EFEBE9 !important;
+}
+
+/* Cells */
+table td {
+  padding: 8px 12px !important;
+  border: 1px solid #E8E0DB !important;
+  color: #3E2723;
+  font-size: 14px !important;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+/* Số liệu căn phải */
+table td:has(> span[style*="font-weight"]),
+table td[style*="text-align: right"],
+table td[style*="text-align:right"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ══════════════════════════════════════════════════
    RESPONSIVE — Tablet + Smartphone
    ══════════════════════════════════════════════════ */
 

@@ -347,7 +347,6 @@ export default function FieldQuest() {
           <thead>
             <tr style={{ borderBottom: '2px solid #e0e0e0', background: '#f8f8f8' }}>
               <th style={TH}>#</th>
-              <th style={TH}>{lang === 'vi' ? 'Mã farm' : 'Farm Code'}</th>
               <th style={TH}>{lang === 'vi' ? 'Nông dân' : 'Farmer'}</th>
               <th style={TH}>{lang === 'vi' ? 'Ngày' : 'Date'}</th>
               <th style={TH}>{lang === 'vi' ? 'Tiến độ' : 'Progress'}</th>
@@ -357,11 +356,11 @@ export default function FieldQuest() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40 }}>
+              <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40 }}>
                 {lang === 'vi' ? 'Đang tải...' : 'Loading...'}
               </td></tr>
             ) : paged.length === 0 ? (
-              <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40, color: '#999' }}>
+              <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40, color: '#999' }}>
                 {lang === 'vi' ? 'Chưa có phiếu nào' : 'No entries yet'}
               </td></tr>
             ) : paged.map((item, idx) => {
@@ -370,7 +369,6 @@ export default function FieldQuest() {
               return (
                 <tr key={item.id} style={{ borderBottom: '1px solid #f0f0f0' }}>
                   <td style={TD}>{(page - 1) * perPage + idx + 1}</td>
-                  <td style={TD}><strong>{item.code}</strong></td>
                   <td style={TD}>{item.farmer_name}</td>
                   <td style={TD}>{item.date}</td>
                   <td style={TD}>

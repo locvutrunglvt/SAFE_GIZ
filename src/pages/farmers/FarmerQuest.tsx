@@ -838,7 +838,6 @@ export default function FarmerQuest() {
               <tr style={{ background: '#F5F0EB', borderBottom: '2px solid #D7CCC8' }}>
                 {[
                   '#',
-                  lang === 'vi' ? 'Mã nông dân' : 'Farmer Code',
                   lang === 'vi' ? 'Họ và tên' : 'Farmer Name',
                   lang === 'vi' ? 'Ngày tạo' : 'Date',
                   lang === 'vi' ? 'Tiến độ' : 'Progress',
@@ -854,12 +853,12 @@ export default function FarmerQuest() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
+                <tr><td colSpan={6} style={{ padding: 40, textAlign: 'center', color: '#8D6E63' }}>
                   <Loader2 size={20} style={{ animation: 'spin 1s linear infinite', marginRight: 8, display: 'inline-block' }} />
                   {lang === 'vi' ? 'Đang tải...' : 'Loading...'}
                 </td></tr>
               ) : entries.length === 0 ? (
-                <tr><td colSpan={7} style={{ padding: 60, textAlign: 'center' }}>
+                <tr><td colSpan={6} style={{ padding: 60, textAlign: 'center' }}>
                   <ClipboardList size={48} color="#D7CCC8" style={{ marginBottom: 12 }} />
                   <div style={{ color: '#8D6E63', fontSize: 15, fontWeight: 500 }}>
                     {lang === 'vi' ? 'Chưa có phiếu điều tra nào' : 'No questionnaire entries yet'}
@@ -881,9 +880,6 @@ export default function FarmerQuest() {
                     onMouseLeave={e => (e.currentTarget.style.background = idx % 2 === 0 ? 'white' : '#FAFAF8')}
                   >
                     <td style={{ padding: '10px', color: '#A1887F' }}>{(page - 1) * 20 + idx + 1}</td>
-                    <td style={{ padding: '10px', fontWeight: 600, color: '#5D4037', fontFamily: 'monospace', fontSize: 12 }}>
-                      {entry.expand?.farmer_id?.code || '-'}
-                    </td>
                     <td style={{ padding: '10px', fontWeight: 600, color: '#2C2C2C' }}>
                       {entry.expand?.farmer_id?.full_name || '-'}
                     </td>
