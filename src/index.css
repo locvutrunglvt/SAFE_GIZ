@@ -1520,6 +1520,25 @@ input, select, textarea {
 }
 
 /* ══════════════════════════════════════════════════
+   PREMIUM DESKTOP — Card hover + Dashboard grid
+   ══════════════════════════════════════════════════ */
+
+/* Stat card hover — lift + shadow on desktop */
+.stat-card-hover:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04) !important;
+  transform: translateY(-2px);
+  border-color: rgba(93,64,55,0.15) !important;
+}
+
+/* Dashboard responsive: 2 cols on mobile */
+@media (max-width: 768px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════
    EXCEL-STYLE TABLES — Áp dụng toàn bộ PC + Mobile
    ══════════════════════════════════════════════════ */
 
