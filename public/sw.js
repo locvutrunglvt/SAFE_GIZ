@@ -1,4 +1,4 @@
-const CACHE_NAME = 'safe-vietnam-v3';
+const CACHE_NAME = 'safe-vietnam-v4';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -39,3 +39,4 @@ self.addEventListener('fetch', e => {
     }))
   );
 });
+
