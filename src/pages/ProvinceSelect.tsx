@@ -48,14 +48,15 @@ export default function ProvinceSelect() {
         ]);
         let totalArea = 0;
         try {
-          const areaResult = await pb.collection('farms').getList(1, 200, {
-            filter: `code~"SAFEGIZ-${prov.code}" && coffee_area>0`,
-            fields: 'coffee_area',
-          });
-          totalArea = areaResult.items.reduce((sum: number, f: any) => sum + (f.coffee_area || 0), 0);
-          if (areaResult.totalPages > 1) {
-            const avg = totalArea / areaResult.items.length;
-            totalArea = avg * areaResult.totalItems;
+          let page = 1;
+          while (true) {
+            const areaResult = await pb.collection('farmers').getList(page, 500, {
+              filter: `code~"SAFEGIZ-${prov.code}" && total_farm_area>0`,
+              fields: 'total_farm_area',
+            });
+            totalArea += areaResult.items.reduce((sum: number, f: any) => sum + (f.total_farm_area || 0), 0);
+            if (page >= areaResult.totalPages) break;
+            page++;
           }
         } catch { /* */ }
         return {
